@@ -35,6 +35,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     let addbutton = UIButton()
     var index : IndexPath!
     var dictionaryOfImages = [UIImage:Array<CollectionViewImage>]()
+    let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
     
     override func viewDidLoad() {
         
@@ -45,6 +46,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         let tileImages4 = [CollectionViewImage(imageName:"tile4-1",width:1,height:1),CollectionViewImage(imageName:"tile4-2",width:1,height:2),CollectionViewImage(imageName:"tile4-3",width:2,height:1),CollectionViewImage(imageName:"tile4-4",width:2,height:2)]
         let tileImages5 =  [CollectionViewImage(imageName:"tile5-1",width:1,height:1),CollectionViewImage(imageName:"tile5-2",width:1,height:2),CollectionViewImage(imageName:"tile5-3",width:2,height:1),CollectionViewImage(imageName:"tile5-4",width:2,height:2)]
         dictionaryOfImages = [#imageLiteral(resourceName: "tileimage1"): tileImages,#imageLiteral(resourceName: "tile2"): tileImages2, #imageLiteral(resourceName: "tile3"): tileImages3,#imageLiteral(resourceName: "tile4"):tileImages4,#imageLiteral(resourceName: "tile5"): tileImages5]
+      
         let mySegmentedControl = UISegmentedControl(items: ["Map", "Male", "Female", "Pet"])
         mySegmentedControl.frame = CGRect(x:0, y:0, width:300, height: 25)
         self.navigationItem.titleView = mySegmentedControl
@@ -289,17 +291,23 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
              */
             
             let uiView = self.scroll.viewWithTag(textArray.count)
-
-            for item in collectionView.arrayOfGridImages {
-                
-                let gridMatrixValue = Int(sqrt(Double(collectionView.arrayOfGridImages.count)))
-                for i in 1...gridMatrixValue {
-                    for j in 1...gridMatrixValue {
-                        let button = uiView?.viewWithTag(sender.tag) as? UIButton
-                        button?.setImage(UIImage(named:item.imageName), for: .normal)
+            let gridMatrixValue = Int(sqrt(Double(gridArray.count)))
+            let tag = sender.tag
+            var startIndexI = tag/10
+           
+            for i in 0..<gridMatrixValue {
+                 var startIndexJ = tag%10
+                    let rowImage = gridArray[i]
+                    for j in 0..<gridMatrixValue {
+                        let uiImageGrid = rowImage[j]
+                        let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
+                         startIndexJ += 1
+                        button?.setImage(uiImageGrid, for: .normal)
+                        
                     }
+                startIndexI += 1
                 }
-            }
+            
             //sender.setImage(collectionView.selectedButton?.image, for: .normal)
             
         }
