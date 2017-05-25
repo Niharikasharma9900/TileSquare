@@ -5,6 +5,15 @@ import UIKit
 import EasyPeasy
 import Darwin
 
+struct ViewControllerConstant{
+    static let collectionView = ElementsCollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
+    static let buttonImages = [[#imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "apple")],[#imageLiteral(resourceName: "face1"), #imageLiteral(resourceName: "hair1"), #imageLiteral(resourceName: "f3"), #imageLiteral(resourceName: "f4"), #imageLiteral(resourceName: "f5")], [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "twitter")], [#imageLiteral(resourceName: "red"), #imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower")]]
+    static let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
+    static let maleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
+    static let femaleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
+    static let petView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
+}
+
 class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,UITableViewDelegate,AddViewControllerDelegate {
     
     private var toolbar: UIToolbar!
@@ -14,15 +23,10 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     private var middleButtonNumber = 5
     private var middleButtonWidth = 100
     private var middlebutton = UIButton()
-    let collectionView = ElementsCollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     var highlightedButtons = [UIButton]()
     private var secondScroll = UIScrollView()
-    let buttonImages = [[#imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "apple")],[#imageLiteral(resourceName: "face1"), #imageLiteral(resourceName: "hair1"), #imageLiteral(resourceName: "f3"), #imageLiteral(resourceName: "f4"), #imageLiteral(resourceName: "f5")], [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "twitter")], [#imageLiteral(resourceName: "red"), #imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower")]]
     var currentView: UIView?
     var scroll: UIScrollView = UIScrollView(frame: CGRect(x:0, y:0, width: (UIScreen.main.bounds.width)*3/4 , height: (UIScreen.main.bounds.height)*4/5))
-    var maleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
-    var femaleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
-    var petView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
     var ourText = String()
     var textArray:[String] = [String]()
     var defaults = UserDefaults.standard
@@ -32,43 +36,16 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     var myUIBarButtonRed: UIBarButtonItem!
     var myUIBarButtonArrow: UIBarButtonItem!
     var myUIBarButtonA: UIBarButtonItem!
+    var preview : UIBarButtonItem!
     let addbutton = UIButton()
-    var index : IndexPath!
     var dictionaryOfImages = [UIImage:Array<CollectionViewImage>]()
-    let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
+    var flag = false
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        let tileImages = [CollectionViewImage(imageName:"tile1-1"),CollectionViewImage(imageName:"tile1-2"),CollectionViewImage(imageName:"tile1-3"),CollectionViewImage(imageName:"tile1-4")]
-        let tileImages2 = [CollectionViewImage(imageName:"tile2-1"),CollectionViewImage(imageName:"tile2-3"),CollectionViewImage(imageName:"tile2-2"),CollectionViewImage(imageName:"tile2-4")]
-        let tileImages3 = [CollectionViewImage(imageName:"tile3-1"),CollectionViewImage(imageName:"tile3-2"),CollectionViewImage(imageName:"tile3-3"),CollectionViewImage(imageName:"tile3-4")]
-        let tileImages4 = [CollectionViewImage(imageName:"tile4-1"),CollectionViewImage(imageName:"tile4-2"),CollectionViewImage(imageName:"tile4-3"),CollectionViewImage(imageName:"tile4-4")]
-        let tileImages5 =  [CollectionViewImage(imageName:"tile5-1"),CollectionViewImage(imageName:"tile5-2"),CollectionViewImage(imageName:"tile5-3"),CollectionViewImage(imageName:"tile5-4")]
-        dictionaryOfImages = [#imageLiteral(resourceName: "tileimage1"): tileImages,#imageLiteral(resourceName: "tile2"): tileImages2, #imageLiteral(resourceName: "tile3"): tileImages3,#imageLiteral(resourceName: "tile4"):tileImages4,#imageLiteral(resourceName: "tile5"): tileImages5]
-      
-        let mySegmentedControl = UISegmentedControl(items: ["Map", "Male", "Female", "Pet"])
-        mySegmentedControl.frame = CGRect(x:0, y:0, width:300, height: 25)
-        self.navigationItem.titleView = mySegmentedControl
-        mySegmentedControl.tintColor = UIColor.red
-        mySegmentedControl.selectedSegmentIndex = 0
-        mySegmentedControl.addTarget(self, action: #selector(segmentedControl(sender:)), for: .valueChanged)
-        toolbar = UIToolbar(frame: CGRect(x:0, y:70,width: self.view.bounds.size.width, height:50.0))
-        toolbar.layer.position = CGPoint(x: self.view.bounds.width/2, y: 80)
-        toolbar.barStyle = .blackTranslucent
-        toolbar.tintColor = UIColor.white
-        toolbar.backgroundColor = UIColor.black
-        myUIBarButtonGreen = UIBarButtonItem(title: "Green", style:.plain, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonGreen.tag = 1
-        myUIBarButtonBlue = UIBarButtonItem(title: "Blue", style:.plain, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonBlue.tag = 2
-        myUIBarButtonRed = UIBarButtonItem(title: "Red", style:.plain, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonRed.tag = 3
-        myUIBarButtonArrow = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonArrow.tag = 4
-        myUIBarButtonA = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fastForward, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonA.tag = 4
-        toolbar.items = [myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,myUIBarButtonArrow,myUIBarButtonA]
+        dictionaryValues()
+        toolbarfunc()
         self.view.addSubview(toolbar)
         addbutton.frame = CGRect(x: self.scroll.frame.size.width, y:100, width:self.view.frame.size.width - self.scroll.frame.size.width, height:50)
         addbutton.setTitle("ADD", for: .normal)
@@ -89,16 +66,16 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
         middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
         middlebutton.backgroundColor = UIColor.white
-        self.view.addSubview(collectionView)
-        collectionView.controller = self
-        collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
+        self.view.addSubview(ViewControllerConstant.collectionView)
+        ViewControllerConstant.collectionView.controller = self
+        ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
         
         var con2 = [NSLayoutConstraint]()
         var previousView2 : UIButton? = nil
         for i in 1...middleButtonNumber{
             let button = UIButton()
             button.tag = i
-            button.setImage(buttonImages[0][i-1], for: .normal)
+            button.setImage(ViewControllerConstant.buttonImages[0][i-1], for: .normal)
             button.imageView?.contentMode = .scaleAspectFit
             button.clipsToBounds = true
             button.backgroundColor = .white
@@ -135,6 +112,49 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         NSLayoutConstraint.activate(con2)
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        
+    }
+    
+    
+    func dictionaryValues(){
+        let tileImages = [CollectionViewImage(imageName:"tile1-1"),CollectionViewImage(imageName:"tile1-2"),CollectionViewImage(imageName:"tile1-3"),CollectionViewImage(imageName:"tile1-4")]
+        let tileImages2 = [CollectionViewImage(imageName:"tile2-1"),CollectionViewImage(imageName:"tile2-3"),CollectionViewImage(imageName:"tile2-2"),CollectionViewImage(imageName:"tile2-4")]
+        let tileImages3 = [CollectionViewImage(imageName:"tile3-1"),CollectionViewImage(imageName:"tile3-2"),CollectionViewImage(imageName:"tile3-3"),CollectionViewImage(imageName:"tile3-4")]
+        let tileImages4 = [CollectionViewImage(imageName:"tile4-1"),CollectionViewImage(imageName:"tile4-2"),CollectionViewImage(imageName:"tile4-3"),CollectionViewImage(imageName:"tile4-4")]
+        let tileImages5 =  [CollectionViewImage(imageName:"tile5-1"),CollectionViewImage(imageName:"tile5-2"),CollectionViewImage(imageName:"tile5-3"),CollectionViewImage(imageName:"tile5-4")]
+        dictionaryOfImages = [#imageLiteral(resourceName: "tileimage1"): tileImages,#imageLiteral(resourceName: "tile2"): tileImages2, #imageLiteral(resourceName: "tile3"): tileImages3,#imageLiteral(resourceName: "tile4"):tileImages4,#imageLiteral(resourceName: "tile5"): tileImages5]
+        
+    }
+    
+    func toolbarfunc(){
+        let mySegmentedControl = UISegmentedControl(items: ["Map", "Male", "Female", "Pet"])
+        mySegmentedControl.frame = CGRect(x:0, y:0, width:300, height: 25)
+        self.navigationItem.titleView = mySegmentedControl
+        mySegmentedControl.tintColor = UIColor.red
+        mySegmentedControl.selectedSegmentIndex = 0
+        mySegmentedControl.addTarget(self, action: #selector(segmentedControl(sender:)), for: .valueChanged)
+        toolbar = UIToolbar(frame: CGRect(x:0, y:70,width: self.view.bounds.size.width, height:50.0))
+        toolbar.layer.position = CGPoint(x: self.view.bounds.width/2, y: 80)
+        toolbar.barStyle = .blackTranslucent
+        toolbar.tintColor = UIColor.white
+        toolbar.backgroundColor = UIColor.black
+        myUIBarButtonGreen = UIBarButtonItem(title: "Green", style:.plain, target: self, action: #selector(onClickBarButton))
+        myUIBarButtonGreen.tag = 1
+        myUIBarButtonBlue = UIBarButtonItem(title: "Blue", style:.plain, target: self, action: #selector(onClickBarButton))
+        myUIBarButtonBlue.tag = 2
+        myUIBarButtonRed = UIBarButtonItem(title: "Eraser",style: .plain,target: self, action: #selector(onClickBarButton))
+        myUIBarButtonRed.tag = 3
+        preview = UIBarButtonItem(title:"Preview",style: .plain, target: self,action: #selector(onClickBarButton))
+        preview.tag = 4
+        myUIBarButtonArrow = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: #selector(onClickBarButton))
+        myUIBarButtonArrow.tag = 5
+        myUIBarButtonA = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fastForward, target: self, action: #selector(onClickBarButton))
+        myUIBarButtonA.tag = 5
+        toolbar.items = [myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,preview,myUIBarButtonArrow,myUIBarButtonA]
+        
+        
+        
+        
         
     }
     
@@ -175,8 +195,20 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         case 2:
             self.view.backgroundColor = UIColor.blue
         case 3:
-            self.view.backgroundColor = UIColor.red
+            if(!flag) {
+                sender.title = "Eraser On"
+                flag = true
+            }
+            else {
+                sender.title = "Eraser"
+                flag = false
+            }
         case 4:
+            let createTableView = Preview()
+            createTableView.screenView = getSnapShot(view: currentView)!
+            self.navigationController?.pushViewController(createTableView, animated: true)
+            
+        case 5:
             let button1 = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(onBackBarButton))
             toolbar.items = [ myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,myUIBarButtonArrow,button1]
             self.view.addSubview(toolbar)
@@ -193,12 +225,25 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
             middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
             middlebutton.backgroundColor = UIColor.white
-            self.view.addSubview(collectionView)
-            collectionView.controller = self
-            collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
+            self.view.addSubview(ViewControllerConstant.collectionView)
+            ViewControllerConstant.collectionView.controller = self
+            ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
         default:
             print("ERROR!!")
         }
+    }
+    
+    func getSnapShot(view: UIView?) -> UIView? {
+        
+        for i in 0..<rowForImage {
+            for j in 0..<columnForImage {
+                let button = view?.viewWithTag(i + 10*j) as? UIButton
+                if button?.imageView?.image == #imageLiteral(resourceName: "square") {
+                    button?.setImage(nil, for: .normal)
+                }
+            }
+        }
+        return view
     }
     
     func onBackBarButton(){
@@ -222,9 +267,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
         middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
         middlebutton.backgroundColor = UIColor.white
-        self.view.addSubview(collectionView)
-        collectionView.controller = self
-        collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
+        self.view.addSubview(ViewControllerConstant.collectionView)
+        ViewControllerConstant.collectionView.controller = self
+        ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
     }
     func edit(){
         let createTableView = AddViewController()
@@ -242,9 +287,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         secondScroll.translatesAutoresizingMaskIntoConstraints = false
         secondScroll.backgroundColor = UIColor.white
         secondScroll <- [Top(600),Left(100), Height(60), Width(UIScreen.main.bounds.width)]
-        self.view.addSubview(collectionView)
-        collectionView.controller = self
-        collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
+        self.view.addSubview(ViewControllerConstant.collectionView)
+        ViewControllerConstant.collectionView.controller = self
+        ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
     }
     func reverse(sender: UIButton){
         
@@ -260,59 +305,56 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     }
     
     func switchButtonImage(sender: UIButton){
-        if collectionView.selectedButton == nil{
+        if ViewControllerConstant.collectionView.selectedButton == nil{
             if sender.backgroundColor != .darkGray{
                 sender.backgroundColor = .darkGray
                 highlightedButtons.append(sender)
-            }else {
+            }
+            else {
                 sender.backgroundColor = .white
                 highlightedButtons.remove(at: highlightedButtons.index(of: sender)!)
             }
-        }
-        else {
-            /*  var startIndexI = 3
-             var startIndexJ = 3
-             //23----i = 2 j = 3
-             let uiView = self.scroll.viewWithTag(1)
-             for i in 1...3 {
-             startIndexJ = 3
-             for j in 1...2 {
-             let india = startIndexJ+(10*startIndexI)
-             let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
-             print(india)
-             startIndexJ += 1
-             button?.setImage(collectionView.selectedButton?.image, for: .normal)
-             
-             }
-             startIndexI += 1
-             
-             }
-             
-             */
-            
+        } else if flag {
             let uiView = self.scroll.viewWithTag(textArray.count)
-            let gridMatrixValue = Int(sqrt(Double(gridArray.count)))
+            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.gridArray.count)))
             let tag = sender.tag
             var startIndexI = tag/10
-           
-            for i in 0..<gridMatrixValue {
-                 var startIndexJ = tag%10
-                  let rowImage = collectionView.arrayOfGridImages[i]
-                    for j in 0..<gridMatrixValue {
-                        let uiImageGrid = rowImage
-                        let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
-                       
-                         startIndexJ += 1
-                        button?.setImage(UIImage(named:uiImageGrid.imageName), for: .normal)
-                        
-                    }
-                startIndexI += 1
+            // var count = 0
+            for _ in 0..<gridMatrixValue {
+                var startIndexJ = tag%10
+                for _ in 0..<gridMatrixValue {
+                    
+                    let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
+                    startIndexJ += 1
+                    button?.setImage(#imageLiteral(resourceName: "square"), for: .normal)
+                    
                 }
-            
-            //sender.setImage(collectionView.selectedButton?.image, for: .normal)
+                startIndexI += 1
+            }
             
         }
-        if collectionView.selectedButton == self{
+        else {
+            
+            let uiView = self.scroll.viewWithTag(textArray.count)
+            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.gridArray.count)))
+            let tag = sender.tag
+            var startIndexI = tag/10
+            var count = 0
+            for _ in 0..<gridMatrixValue {
+                var startIndexJ = tag%10
+                for _ in 0..<gridMatrixValue {
+                    
+                    let uiImageGrid = ViewControllerConstant.collectionView.arrayOfGridImages[count]
+                    let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
+                    count += 1
+                    startIndexJ += 1
+                    button?.setImage(UIImage(named:uiImageGrid.imageName), for: .normal)
+                    
+                }
+                startIndexI += 1
+            }
+        }
+        if ViewControllerConstant.collectionView.selectedButton == self{
             highlightedButtons.removeAll()
             
         }
@@ -320,92 +362,92 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     
     
     func sectionButton(sender: UIButton){
-        collectionView.selectedButton = nil
+        ViewControllerConstant.collectionView.selectedButton = nil
         if sender.tag == 1{
-            collectionView.images = [#imageLiteral(resourceName: "tileimage1"), #imageLiteral(resourceName: "tile2"), #imageLiteral(resourceName: "tile3"), #imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "tile5")]
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "tileimage1"), #imageLiteral(resourceName: "tile2"), #imageLiteral(resourceName: "tile3"), #imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "tile5")]
         }
         else if sender.tag == 2 {
-            collectionView.images = [#imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "Building"), #imageLiteral(resourceName: "small_school"), #imageLiteral(resourceName: "supermarket"), #imageLiteral(resourceName: "Hospital")]
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "Building"), #imageLiteral(resourceName: "small_school"), #imageLiteral(resourceName: "supermarket"), #imageLiteral(resourceName: "Hospital")]
         }
         else if sender.tag == 3 {
-            collectionView.images = [#imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake")]
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "cake")]
         }
         else if sender.tag == 4 {
-            collectionView.images = [#imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line")]
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "line")]
         }
         else if sender.tag == 5 {
-            collectionView.images = [#imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple")]
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple"), #imageLiteral(resourceName: "apple")]
         }
         else if sender.tag == 6{
-            collectionView.needToChangeImageView = maleView.topImageView
-            collectionView.images = [#imageLiteral(resourceName: "face1"),#imageLiteral(resourceName: "face2"),#imageLiteral(resourceName: "face3"), #imageLiteral(resourceName: "face4"),#imageLiteral(resourceName: "face5"),#imageLiteral(resourceName: "face6"),#imageLiteral(resourceName: "face7"),#imageLiteral(resourceName: "face8")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.topImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "face1"),#imageLiteral(resourceName: "face2"),#imageLiteral(resourceName: "face3"), #imageLiteral(resourceName: "face4"),#imageLiteral(resourceName: "face5"),#imageLiteral(resourceName: "face6"),#imageLiteral(resourceName: "face7"),#imageLiteral(resourceName: "face8")]
         }
         else if sender.tag == 7{
-            collectionView.needToChangeImageView = maleView.leftImageView
-            collectionView.images = [#imageLiteral(resourceName: "hair1"),#imageLiteral(resourceName: "hair2"),#imageLiteral(resourceName: "hair3"),#imageLiteral(resourceName: "hair4"),#imageLiteral(resourceName: "hair5"),#imageLiteral(resourceName: "hair6"),#imageLiteral(resourceName: "hair7"),#imageLiteral(resourceName: "hair8")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.leftImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "hair1"),#imageLiteral(resourceName: "hair2"),#imageLiteral(resourceName: "hair3"),#imageLiteral(resourceName: "hair4"),#imageLiteral(resourceName: "hair5"),#imageLiteral(resourceName: "hair6"),#imageLiteral(resourceName: "hair7"),#imageLiteral(resourceName: "hair8")]
         }
         else if sender.tag == 8{
-            collectionView.needToChangeImageView = maleView.rightImageView
-            collectionView.images = [#imageLiteral(resourceName: "f3"),#imageLiteral(resourceName: "f5"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f3"),#imageLiteral(resourceName: "f1")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.rightImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "f3"),#imageLiteral(resourceName: "f5"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f3"),#imageLiteral(resourceName: "f1")]
         }
         else if sender.tag == 9{
-            collectionView.needToChangeImageView = maleView.bottomImageView
-            collectionView.images = [#imageLiteral(resourceName: "f2"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f3"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f1")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.bottomImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "f2"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f3"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f1")]
         }
         else if sender.tag == 10{
-            collectionView.needToChangeImageView = maleView.furtherLeft
-            collectionView.images = [#imageLiteral(resourceName: "f1"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f2"),#imageLiteral(resourceName: "f5"),#imageLiteral(resourceName: "f3")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.furtherLeft
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "f1"),#imageLiteral(resourceName: "f4"),#imageLiteral(resourceName: "f2"),#imageLiteral(resourceName: "f5"),#imageLiteral(resourceName: "f3")]
         }else if sender.tag == 11{
-            collectionView.needToChangeImageView = femaleView.topImageView
-            collectionView.images = [#imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.femaleView.topImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug")]
         }
         else if sender.tag == 12 {
-            collectionView.needToChangeImageView = femaleView.leftImageView
-            collectionView.images = [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "twitter")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.femaleView.leftImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "twitter")]
         }
         else if sender.tag == 13 {
-            collectionView.needToChangeImageView = femaleView.rightImageView
-            collectionView.images = [#imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "cat")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.rightImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "cat")]
         }
         else if sender.tag == 14 {
-            collectionView.needToChangeImageView = femaleView.bottomImageView
-            collectionView.images = [#imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "bug")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.bottomImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "bug")]
         }
         else if sender.tag == 15 {
-            collectionView.needToChangeImageView = femaleView.furtherLeft
-            collectionView.images = [#imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "dog")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.furtherLeft
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "twitter"), #imageLiteral(resourceName: "dog")]
         }
         else if sender.tag == 16{
-            collectionView.needToChangeImageView = petView.topImageView
-            collectionView.images = [#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower") ]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.topImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower") ]
         }
         else if sender.tag == 17{
-            collectionView.needToChangeImageView = petView.leftImageView
-            collectionView.images = [#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green"),#imageLiteral(resourceName: "box"),#imageLiteral(resourceName: "bullet")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.leftImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green"),#imageLiteral(resourceName: "box"),#imageLiteral(resourceName: "bullet")]
         }
         else if sender.tag == 18{
-            collectionView.needToChangeImageView = petView.rightImageView
-            collectionView.images = [#imageLiteral(resourceName: "bullet"),#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green"),#imageLiteral(resourceName: "box")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.rightImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "bullet"),#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green"),#imageLiteral(resourceName: "box")]
         }
         else if sender.tag == 19{
-            collectionView.needToChangeImageView = petView.bottomImageView
-            collectionView.images = [#imageLiteral(resourceName: "box"),#imageLiteral(resourceName: "bullet"),#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.bottomImageView
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "box"),#imageLiteral(resourceName: "bullet"),#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red"),#imageLiteral(resourceName: "green")]
         }
         else if sender.tag == 20{
-            collectionView.needToChangeImageView = petView.furtherLeft
-            collectionView.images = [#imageLiteral(resourceName: "green"),#imageLiteral(resourceName: "box"),#imageLiteral(resourceName: "bullet"),#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red")]
+            ViewControllerConstant.collectionView.needToChangeImageView = ViewControllerConstant.maleView.furtherLeft
+            ViewControllerConstant.collectionView.images = [#imageLiteral(resourceName: "green"),#imageLiteral(resourceName: "box"),#imageLiteral(resourceName: "bullet"),#imageLiteral(resourceName: "flower"),#imageLiteral(resourceName: "red")]
         }
         
-        collectionView.reloadData()
+        ViewControllerConstant.collectionView.reloadData()
     }
     
     func segmentedControl(sender: UISegmentedControl){
         secondScroll.contentOffset = CGPoint.zero
         switch sender.selectedSegmentIndex {
         case 0:
-            petView.removeFromSuperview()
-            maleView.removeFromSuperview()
-            femaleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
             toolbar = UIToolbar(frame: CGRect(x:0, y:70,width: self.view.bounds.size.width, height:50.0))
             toolbar.layer.position = CGPoint(x: self.view.bounds.width/2, y: 80)
             toolbar.barStyle = .blackTranslucent
@@ -433,34 +475,34 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             middlebutton.backgroundColor = UIColor.white
             currentView = scroll
             
-            self.view.addSubview(collectionView)
-            collectionView.controller = self
-            collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
+            self.view.addSubview(ViewControllerConstant.collectionView)
+            ViewControllerConstant.collectionView.controller = self
+            ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
             changeSecondScrollButtons(tag: 1, index:0)
         case 1:
-            petView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
             scroll.removeFromSuperview()
-            femaleView.removeFromSuperview()
-            self.view.addSubview(maleView)
-            currentView = maleView
+            ViewControllerConstant.maleView.removeFromSuperview()
+            self.view.addSubview(ViewControllerConstant.maleView)
+            currentView = ViewControllerConstant.maleView
             secondScroll.translatesAutoresizingMaskIntoConstraints = false
             secondScroll.backgroundColor = UIColor.white
             secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
             self.view.addSubview(middlebutton)
             changeSecondScrollButtons(tag: 6, index:1)
         case 2:
-            petView.removeFromSuperview()
-            maleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
             scroll.removeFromSuperview()
-            self.view.addSubview(femaleView)
-            currentView = femaleView
+            self.view.addSubview(ViewControllerConstant.maleView)
+            currentView = ViewControllerConstant.maleView
             changeSecondScrollButtons(tag: 11, index:2)
         case 3:
-            maleView.removeFromSuperview()
-            femaleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
+            ViewControllerConstant.maleView.removeFromSuperview()
             scroll.removeFromSuperview()
-            self.view.addSubview(petView)
-            currentView = petView
+            self.view.addSubview(ViewControllerConstant.maleView)
+            currentView = ViewControllerConstant.maleView
             changeSecondScrollButtons(tag: 16, index:3)
         default:
             print("0")
@@ -469,7 +511,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     
     func changeSecondScrollButtons(tag: Int, index: Int){
         let subviews = secondScroll.subviews
-        let images = buttonImages[index]
+        let images = ViewControllerConstant.buttonImages[index]
         var theButton: UIButton? = nil
         var buttons = [UIButton]()
         

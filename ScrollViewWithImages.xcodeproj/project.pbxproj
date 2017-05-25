@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		294C229C1ECC9220008D4751 /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 294C229B1ECC9220008D4751 /* AddViewController.swift */; };
+		29921D1D1ED73C5A008B7D10 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29921D1C1ED73C5A008B7D10 /* Preview.swift */; };
+		29921D1F1ED748CE008B7D10 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29921D1E1ED748CE008B7D10 /* UIImage.swift */; };
 		29FA9E131EBBC7CD008685C0 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FA9E121EBBC7CD008685C0 /* TableViewCell.swift */; };
 		29FA9E5C1EC1FE00008685C0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29FA9E5B1EC1FE00008685C0 /* ViewController.swift */; };
 		936432571E980BFB00F25659 /* MaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936432561E980BFB00F25659 /* MaleView.swift */; };
@@ -21,6 +23,8 @@
 
 /* Begin PBXFileReference section */
 		294C229B1ECC9220008D4751 /* AddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		29921D1C1ED73C5A008B7D10 /* Preview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
+		29921D1E1ED748CE008B7D10 /* UIImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		29FA9E121EBBC7CD008685C0 /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		29FA9E5B1EC1FE00008685C0 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		87F6280BF3B52DF3701A3BC7 /* Pods-ScrollViewWithImages.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScrollViewWithImages.release.xcconfig"; path = "Pods/Target Support Files/Pods-ScrollViewWithImages/Pods-ScrollViewWithImages.release.xcconfig"; sourceTree = "<group>"; };
@@ -88,6 +92,8 @@
 				29FA9E121EBBC7CD008685C0 /* TableViewCell.swift */,
 				294C229B1ECC9220008D4751 /* AddViewController.swift */,
 				937A018D1E96BA1000E1427D /* Info.plist */,
+				29921D1C1ED73C5A008B7D10 /* Preview.swift */,
+				29921D1E1ED748CE008B7D10 /* UIImage.swift */,
 			);
 			path = ScrollViewWithImages;
 			sourceTree = "<group>";
@@ -225,9 +231,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				29FA9E5C1EC1FE00008685C0 /* ViewController.swift in Sources */,
+				29921D1F1ED748CE008B7D10 /* UIImage.swift in Sources */,
 				29FA9E131EBBC7CD008685C0 /* TableViewCell.swift in Sources */,
 				294C229C1ECC9220008D4751 /* AddViewController.swift in Sources */,
 				937A01941E96CDE800E1427D /* ElementsCollectionView.swift in Sources */,
+				29921D1D1ED73C5A008B7D10 /* Preview.swift in Sources */,
 				937A01821E96BA1000E1427D /* AppDelegate.swift in Sources */,
 				936432571E980BFB00F25659 /* MaleView.swift in Sources */,
 			);

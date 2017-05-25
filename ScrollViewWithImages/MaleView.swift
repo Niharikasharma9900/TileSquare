@@ -25,7 +25,7 @@ class MaleView: UIView {
         leftImageView.addSubview(topImageView)
         topImageView.contentMode = .scaleAspectFit
         topImageView.translatesAutoresizingMaskIntoConstraints = false
-       topImageView <- [CenterX(), CenterY(), Width(300), Height(100)]
+        topImageView <- [CenterX(), CenterY(), Width(300), Height(100)]
   
        
 

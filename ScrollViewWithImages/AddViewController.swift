@@ -1,10 +1,3 @@
-//
-//  AddViewController.swift
-//  ScrollViewWithImages
-//
-//  Created by Niharika Sharma on 2017-05-04.
-//  Copyright © 2017 Sophie. All rights reserved.
-//
 
 import UIKit
 import EasyPeasy

@@ -3,11 +3,8 @@ import UIKit
 
 struct CollectionViewImage {
     var imageName: String
-   
-    
     init(imageName:String) {
-        self.imageName = imageName
-       
+    self.imageName = imageName
     }
 }
 class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -60,11 +57,7 @@ class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UIColle
         
         if cell.backgroundView == nil{
             let imageView = UIImageView()
-           
-         //  let image = UIImage(named: ((self.image[indexPath.item] as CollectionViewImage).imageName))
-            
             imageView.image = images[indexPath.row]
-          //  imageView.image = image[indexPath.row]
             imageView.backgroundColor = .clear
             imageView.contentMode = .scaleAspectFit
             cell.backgroundView = imageView
