@@ -3,13 +3,11 @@ import UIKit
 
 struct CollectionViewImage {
     var imageName: String
-    var width: Int
-    var height: Int
+   
     
-    init(imageName:String,width:Int,height:Int) {
+    init(imageName:String) {
         self.imageName = imageName
-        self.width = width
-        self.height = height
+       
     }
 }
 class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
@@ -19,7 +17,7 @@ class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UIColle
     var selectedButton: UIImageView?
     var needToChangeImageView: UIImageView?
     let interimSpacing = CGFloat(0)
-    var image = [CollectionViewImage(imageName: "schoolbus", width: 2, height: 2),CollectionViewImage(imageName:"bus",width: 2,height: 3),CollectionViewImage(imageName:"cycle",width: 1,height: 1),CollectionViewImage(imageName:"motorcycle",width:2,height:3),CollectionViewImage(imageName:"car",width:2,height:2)]
+    var image = [CollectionViewImage(imageName: "tileImage1"),CollectionViewImage(imageName:"tile2"),CollectionViewImage(imageName:"tile3"),CollectionViewImage(imageName:"tile3"),CollectionViewImage(imageName:"tile4")]
     
 
     weak var controller : ViewController?

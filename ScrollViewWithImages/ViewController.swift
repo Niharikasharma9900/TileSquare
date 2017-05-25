@@ -40,11 +40,11 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        let tileImages = [CollectionViewImage(imageName:"tile1-1",width: 1,height:1),CollectionViewImage(imageName:"tile1-2",width:1,height:2),CollectionViewImage(imageName:"tile1-3",width:2,height:1),CollectionViewImage(imageName:"tile1-4",width:2,height:2)]
-        let tileImages2 = [CollectionViewImage(imageName:"tile2-1",width:1,height:1),CollectionViewImage(imageName:"tile2-3",width:1,height:2),CollectionViewImage(imageName:"tile2-2",width:2,height:1),CollectionViewImage(imageName:"tile2-4",width:2,height:2)]
-        let tileImages3 = [CollectionViewImage(imageName:"tile3-1",width:1,height:1),CollectionViewImage(imageName:"tile3-2",width:1,height:2),CollectionViewImage(imageName:"tile3-3",width:2,height:1),CollectionViewImage(imageName:"tile3-4",width:2,height:2)]
-        let tileImages4 = [CollectionViewImage(imageName:"tile4-1",width:1,height:1),CollectionViewImage(imageName:"tile4-2",width:1,height:2),CollectionViewImage(imageName:"tile4-3",width:2,height:1),CollectionViewImage(imageName:"tile4-4",width:2,height:2)]
-        let tileImages5 =  [CollectionViewImage(imageName:"tile5-1",width:1,height:1),CollectionViewImage(imageName:"tile5-2",width:1,height:2),CollectionViewImage(imageName:"tile5-3",width:2,height:1),CollectionViewImage(imageName:"tile5-4",width:2,height:2)]
+        let tileImages = [CollectionViewImage(imageName:"tile1-1"),CollectionViewImage(imageName:"tile1-2"),CollectionViewImage(imageName:"tile1-3"),CollectionViewImage(imageName:"tile1-4")]
+        let tileImages2 = [CollectionViewImage(imageName:"tile2-1"),CollectionViewImage(imageName:"tile2-3"),CollectionViewImage(imageName:"tile2-2"),CollectionViewImage(imageName:"tile2-4")]
+        let tileImages3 = [CollectionViewImage(imageName:"tile3-1"),CollectionViewImage(imageName:"tile3-2"),CollectionViewImage(imageName:"tile3-3"),CollectionViewImage(imageName:"tile3-4")]
+        let tileImages4 = [CollectionViewImage(imageName:"tile4-1"),CollectionViewImage(imageName:"tile4-2"),CollectionViewImage(imageName:"tile4-3"),CollectionViewImage(imageName:"tile4-4")]
+        let tileImages5 =  [CollectionViewImage(imageName:"tile5-1"),CollectionViewImage(imageName:"tile5-2"),CollectionViewImage(imageName:"tile5-3"),CollectionViewImage(imageName:"tile5-4")]
         dictionaryOfImages = [#imageLiteral(resourceName: "tileimage1"): tileImages,#imageLiteral(resourceName: "tile2"): tileImages2, #imageLiteral(resourceName: "tile3"): tileImages3,#imageLiteral(resourceName: "tile4"):tileImages4,#imageLiteral(resourceName: "tile5"): tileImages5]
       
         let mySegmentedControl = UISegmentedControl(items: ["Map", "Male", "Female", "Pet"])
@@ -297,12 +297,13 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
            
             for i in 0..<gridMatrixValue {
                  var startIndexJ = tag%10
-                    let rowImage = gridArray[i]
+                  let rowImage = collectionView.arrayOfGridImages[i]
                     for j in 0..<gridMatrixValue {
-                        let uiImageGrid = rowImage[j]
+                        let uiImageGrid = rowImage
                         let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
+                       
                          startIndexJ += 1
-                        button?.setImage(uiImageGrid, for: .normal)
+                        button?.setImage(UIImage(named:uiImageGrid.imageName), for: .normal)
                         
                     }
                 startIndexI += 1
