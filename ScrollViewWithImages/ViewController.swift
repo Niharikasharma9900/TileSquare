@@ -152,10 +152,6 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         myUIBarButtonA.tag = 5
         toolbar.items = [myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,preview,myUIBarButtonArrow,myUIBarButtonA]
         
-        
-        
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -205,7 +201,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             }
         case 4:
             let createTableView = Preview()
-            createTableView.screenView = getSnapShot(view: currentView)!
+            createTableView.screenView = getSnapShot(view: currentView)!.copyView()
             self.navigationController?.pushViewController(createTableView, animated: true)
             
         case 5:
@@ -235,15 +231,16 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     
     func getSnapShot(view: UIView?) -> UIView? {
         
+        let sampleView = view
         for i in 0..<rowForImage {
             for j in 0..<columnForImage {
-                let button = view?.viewWithTag(i + 10*j) as? UIButton
+                let button = sampleView?.viewWithTag(i + 10*j) as? UIButton
                 if button?.imageView?.image == #imageLiteral(resourceName: "square") {
                     button?.setImage(nil, for: .normal)
                 }
             }
         }
-        return view
+        return sampleView
     }
     
     func onBackBarButton(){
@@ -546,64 +543,40 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         scroll.frame = CGRect(x:0, y:105 , width: self.view.frame.width*3/4,height: self.view.frame.height*35/100)
         let uiView = UIView()
         uiView.frame = CGRect(x:0, y: 0, width: self.view.frame.width * 80/100 , height : self.view.frame.height * 2/5)
+        
+        
         scroll.contentSize = uiView.frame.size
+        scroll.contentSize = imageView.frame.size
         let index = textArray.count
         uiView.tag = index
         print("UIView tag is---",uiView.tag)
         scroll.addSubview(uiView)
         self.view.addSubview(scroll)
-        //   self.view.addSubview(tableView)
         currentView = scroll
-        
-        var con = [NSLayoutConstraint]()
-        var currentLeftWidth:Double = 0
-        for i in 1...rowForImage{
-            var previousView : UIButton? = nil
-            for j in 1...columnForImage{
-                let imageView = UIButton()
+     
+        var x:Double = 0
+        var y:Double = 100
+        for i in 0...rowForImage{
+            for j in 0...columnForImage{
+                let imageView =  UIButton()
+                
                 imageView.addTarget(self, action: #selector(switchButtonImage(sender:)), for: .touchUpInside)
                 imageView.backgroundColor = .clear
-                imageView.translatesAutoresizingMaskIntoConstraints = false
+                imageView.frame = CGRect(x:width*Double(j), y: Double(i)*height, width: width , height : height)
                 imageView.tag = i + 10*j
                 imageView.setImage(#imageLiteral(resourceName: "square"), for: .normal)
                 uiView.addSubview(imageView)
-                
-                if i == rowForImage{
-                    con.append(contentsOf:
-                        NSLayoutConstraint.constraints(withVisualFormat:
-                            "H:|-currentLeftWidth-[imageView(imageViewWidth)]|",
-                                                       metrics:["currentLeftWidth": currentLeftWidth, "imageViewWidth":width],
-                                                       views:["imageView":imageView]))
-                }
-                else {
-                    con.append(contentsOf:
-                        NSLayoutConstraint.constraints(withVisualFormat:
-                            "H:|-currentLeftWidth-[imageView(imageViewWidth)]",
-                                                       metrics:["currentLeftWidth": currentLeftWidth, "imageViewWidth":width],
-                                                       views:["imageView":imageView]))
-                }
-                if previousView == nil { // first one, pin to top
-                    con.append(contentsOf:
-                        NSLayoutConstraint.constraints(withVisualFormat:
-                            "V:|[imageView(imageViewHeight)]",
-                                                       metrics:["imageViewHeight":height],
-                                                       views:["imageView":imageView]))
-                }
-                else { // all others, pin to previous
-                    con.append(contentsOf:
-                        NSLayoutConstraint.constraints(withVisualFormat:
-                            "V:[prev][imageView(imageViewHeight)]",
-                                                       metrics:["imageViewHeight": height],
-                                                       views:["imageView":imageView, "prev":previousView!]))
-                }
-                previousView = imageView
+                //self.view.addSubview(uiView)
+                y += 10
             }
-            con.append(contentsOf:
-                NSLayoutConstraint.constraints(withVisualFormat:
-                    "V:[imageView]|", metrics:nil, views:["imageView":previousView!]))
-            currentLeftWidth += width
+            x += 10
         }
-        NSLayoutConstraint.activate(con)
+    }
+}
+
+extension UIView {
+    func copyView<T: UIView>() -> T {
+        return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as! T
     }
 }
 

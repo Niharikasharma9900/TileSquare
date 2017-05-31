@@ -23,8 +23,10 @@ class Preview: UIViewController {
     }
     
     func saveimage(){
+     // let create = ViewController()
     savedimage = UIImage.imageWithView(view: screenView)
     UIImageWriteToSavedPhotosAlbum(savedimage!, nil, nil, nil)
+        self.navigationController?.popToRootViewController(animated: true)
     }
 
    
