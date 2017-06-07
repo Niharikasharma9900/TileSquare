@@ -8,7 +8,7 @@ import Darwin
 struct ViewControllerConstant{
     static let collectionView = ElementsCollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     static let buttonImages = [[#imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "apple")],[#imageLiteral(resourceName: "face1"), #imageLiteral(resourceName: "hair1"), #imageLiteral(resourceName: "f3"), #imageLiteral(resourceName: "f4"), #imageLiteral(resourceName: "f5")], [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "twitter")], [#imageLiteral(resourceName: "red"), #imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower")]]
-    static let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
+  //  static let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
     static let maleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
     static let femaleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
     static let petView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
@@ -229,6 +229,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     
     func getSnapShot(view: UIView?) -> UIView? {
         let sampleView = view
+      //  sampleView?.frame = CGRect(x: 0, y: 200, width: 200 , height: 400)
         sampleView?.backgroundColor = UIColor.white
         
         for i in 0..<rowForImage {
@@ -309,7 +310,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             }
         } else if flag {
             let uiView = self.scroll.viewWithTag(textArray.count)
-            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.gridArray.count)))
+            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.collectionView.arrayOfGridImages.count)))
             let tag = sender.tag
             var startIndexI = tag/10
             for _ in 0..<gridMatrixValue {
