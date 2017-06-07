@@ -23,5 +23,53 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScrollViewWithImages/Preview.swift"
+            timestampString = "518462581.067411"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "pinchGestureFunc(gestureRecognizer:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ScrollViewWithImages.Preview.pinchGestureFunc (gestureRecognizer : __ObjC.UIPinchGestureRecognizer) -&gt; ()"
+                  moduleName = "ScrollViewWithImages"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/niharikasharma/TileSquare/ScrollViewWithImages/Preview.swift"
+                  timestampString = "518462076.558757"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "19">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ScrollViewWithImages.Preview.pinchGestureFunc (gestureRecognizer : __ObjC.UIPinchGestureRecognizer) -&gt; ()"
+                  moduleName = "ScrollViewWithImages"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/niharikasharma/TileSquare/ScrollViewWithImages/Preview.swift"
+                  timestampString = "518462076.560217"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "290">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

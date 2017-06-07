@@ -30,16 +30,14 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     var ourText = String()
     var textArray:[String] = [String]()
     var defaults = UserDefaults.standard
-    var imageView: UIImageView! = UIImageView(frame: CGRect(x:0, y:100, width: (UIScreen.main.bounds.width)*3/4 , height: (UIScreen.main.bounds.height)*4/5))
-    var myUIBarButtonGreen: UIBarButtonItem!
-    var myUIBarButtonBlue : UIBarButtonItem!
-    var myUIBarButtonRed: UIBarButtonItem!
+    var eraser: UIBarButtonItem!
     var myUIBarButtonArrow: UIBarButtonItem!
     var myUIBarButtonA: UIBarButtonItem!
     var preview : UIBarButtonItem!
     let addbutton = UIButton()
     var dictionaryOfImages = [UIImage:Array<CollectionViewImage>]()
     var flag = false
+    var savedimage1 : UIImage!
     
     override func viewDidLoad() {
         
@@ -60,9 +58,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         self.view.addSubview(secondScroll)
         secondScroll.translatesAutoresizingMaskIntoConstraints = false
         secondScroll.backgroundColor = UIColor.white
-        secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
+        secondScroll <- [Top().to(self.view, .centerY), Left(80), Right(), Height(60), Width(UIScreen.main.bounds.width)]
         self.view.addSubview(middlebutton)
-        middlebutton <- [Top().to(self.view, .centerY), Left(), Width(100), Height(60)]
+        middlebutton <- [Top().to(self.view, .centerY), Left(), Width(80), Height(60)]
         middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
         middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
         middlebutton.backgroundColor = UIColor.white
@@ -138,19 +136,15 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         toolbar.barStyle = .blackTranslucent
         toolbar.tintColor = UIColor.white
         toolbar.backgroundColor = UIColor.black
-        myUIBarButtonGreen = UIBarButtonItem(title: "Green", style:.plain, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonGreen.tag = 1
-        myUIBarButtonBlue = UIBarButtonItem(title: "Blue", style:.plain, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonBlue.tag = 2
-        myUIBarButtonRed = UIBarButtonItem(title: "Eraser",style: .plain,target: self, action: #selector(onClickBarButton))
-        myUIBarButtonRed.tag = 3
+        eraser = UIBarButtonItem(title: "Eraser",style: .plain,target: self, action: #selector(onClickBarButton))
+        eraser.tag = 3
         preview = UIBarButtonItem(title:"Preview",style: .plain, target: self,action: #selector(onClickBarButton))
         preview.tag = 4
         myUIBarButtonArrow = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: #selector(onClickBarButton))
         myUIBarButtonArrow.tag = 5
         myUIBarButtonA = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fastForward, target: self, action: #selector(onClickBarButton))
         myUIBarButtonA.tag = 5
-        toolbar.items = [myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,preview,myUIBarButtonArrow,myUIBarButtonA]
+        toolbar.items = [eraser,preview,myUIBarButtonArrow,myUIBarButtonA]
         
     }
     
@@ -192,21 +186,25 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             self.view.backgroundColor = UIColor.blue
         case 3:
             if(!flag) {
-                sender.title = "Eraser On"
+                
+                sender.tintColor = UIColor.cyan
                 flag = true
             }
             else {
-                sender.title = "Eraser"
+                sender.tintColor = UIColor.white
                 flag = false
             }
         case 4:
+           
             let createTableView = Preview()
-            createTableView.screenView = getSnapShot(view: currentView)!.copyView()
+         // createTableView.screenView = getSnapShot(view: currentView)!.copyView()
+            savedimage1 = UIImage.imageWithView(view: getSnapShot(view: currentView)!)
+            createTableView.savedimage = savedimage1
             self.navigationController?.pushViewController(createTableView, animated: true)
             
         case 5:
-            let button1 = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(onBackBarButton))
-            toolbar.items = [ myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,myUIBarButtonArrow,button1]
+            let back = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(onBackBarButton))
+            toolbar.items = [eraser,preview,myUIBarButtonArrow,back]
             self.view.addSubview(toolbar)
             scroll.frame = CGRect(x:0,y:100,width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height*3/4)
             self.view.addSubview(scroll)
@@ -217,7 +215,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             secondScroll.backgroundColor = UIColor.white
             secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
             self.view.addSubview(middlebutton)
-            middlebutton <- [Top().to(self.view, .centerY),Left(0), Height(60), Width(100)]
+            middlebutton <- [Top().to(self.view, .centerY),Left(0), Height(60), Width(80)]
             middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
             middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
             middlebutton.backgroundColor = UIColor.white
@@ -230,8 +228,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     }
     
     func getSnapShot(view: UIView?) -> UIView? {
-        
         let sampleView = view
+        sampleView?.backgroundColor = UIColor.white
+        
         for i in 0..<rowForImage {
             for j in 0..<columnForImage {
                 let button = sampleView?.viewWithTag(i + 10*j) as? UIButton
@@ -244,12 +243,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     }
     
     func onBackBarButton(){
-        toolbar = UIToolbar(frame: CGRect(x:0, y:70,width: self.view.bounds.size.width, height:50.0))
-        toolbar.layer.position = CGPoint(x: self.view.bounds.width/2, y: 80)
-        toolbar.barStyle = .blackTranslucent
-        toolbar.tintColor = UIColor.white
-        toolbar.backgroundColor = UIColor.black
-        toolbar.items = [myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,myUIBarButtonArrow,myUIBarButtonA]
+        toolbar.items = [eraser,preview,myUIBarButtonArrow,myUIBarButtonA]
         self.view.addSubview(toolbar)
         self.view.addSubview(scroll)
         scroll.frame = CGRect(x:0,y:100,width: UIScreen.main.bounds.width,height: UIScreen.main.bounds.height*3/4)
@@ -258,9 +252,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         self.view.addSubview(secondScroll)
         secondScroll.translatesAutoresizingMaskIntoConstraints = false
         secondScroll.backgroundColor = UIColor.white
-        secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
+        secondScroll <- [Top().to(self.view, .centerY), Left(80), Right(), Height(60), Width(UIScreen.main.bounds.width)]
         self.view.addSubview(middlebutton)
-        middlebutton <- [Top().to(self.view, .centerY),Left(0), Height(60), Width(100)]
+        middlebutton <- [Top().to(self.view, .centerY),Left(0), Height(60), Width(80)]
         middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
         middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
         middlebutton.backgroundColor = UIColor.white
@@ -268,22 +262,24 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         ViewControllerConstant.collectionView.controller = self
         ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
     }
+    
     func edit(){
         let createTableView = AddViewController()
         createTableView.delegate = self
         self.navigationController?.pushViewController(createTableView, animated: true)
     }
+    
     func viewchange(sender: UIButton){
-        scroll.frame = CGRect(x:0, y:100, width: (UIScreen.main.bounds.width)*3/4 , height: (UIScreen.main.bounds.height)*4/5)
+        scroll.frame = CGRect(x:0, y:100, width: (UIScreen.main.bounds.width)*3/4 , height: (UIScreen.main.bounds.height)*9/10)
         self.view.addSubview(scroll)
         self.view.addSubview(middlebutton)
-        middlebutton <- [ Top(600).to(self.view),Left(0), Height(60), Width(100)]
+        middlebutton <- [ Top(self.scroll.frame.height),Left(0), Height(self.view.frame.height - self.scroll.frame.height), Width(80)]
         middlebutton.setImage(#imageLiteral(resourceName: "up"), for: .normal)
         middlebutton.addTarget(self, action: #selector(reverse(sender:)), for: .touchUpInside)
         self.view.addSubview(secondScroll)
         secondScroll.translatesAutoresizingMaskIntoConstraints = false
         secondScroll.backgroundColor = UIColor.white
-        secondScroll <- [Top(600),Left(100), Height(60), Width(UIScreen.main.bounds.width)]
+        secondScroll <- [ Top(self.scroll.frame.height),Left(80), Height(self.view.frame.height - self.scroll.frame.height), Width(80)]
         self.view.addSubview(ViewControllerConstant.collectionView)
         ViewControllerConstant.collectionView.controller = self
         ViewControllerConstant.collectionView <- [Top().to(secondScroll, .bottom), Left(), Right(), Bottom()]
@@ -293,9 +289,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         self.view.addSubview(secondScroll)
         secondScroll.translatesAutoresizingMaskIntoConstraints = false
         secondScroll.backgroundColor = UIColor.white
-        secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
+        secondScroll <- [Top().to(self.view, .centerY), Left(80), Right(), Height(60), Width(UIScreen.main.bounds.width)]
         self.view.addSubview(middlebutton)
-        middlebutton <- [Top().to(self.view, .centerY), Left(), Width(100), Height(60)]
+        middlebutton <- [Top().to(self.view, .centerY), Left(), Width(80), Height(60)]
         middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
         middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
         middlebutton.backgroundColor = UIColor.white
@@ -316,7 +312,6 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.gridArray.count)))
             let tag = sender.tag
             var startIndexI = tag/10
-            // var count = 0
             for _ in 0..<gridMatrixValue {
                 var startIndexJ = tag%10
                 for _ in 0..<gridMatrixValue {
@@ -333,12 +328,13 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         else {
             
             let uiView = self.scroll.viewWithTag(textArray.count)
-            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.gridArray.count)))
+        
+            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.collectionView.arrayOfGridImages.count)))
+            var count = 0
             let tag = sender.tag
             var startIndexI = tag/10
-            var count = 0
             for _ in 0..<gridMatrixValue {
-                var startIndexJ = tag%10
+                var startIndexJ = tag % 10
                 for _ in 0..<gridMatrixValue {
                     
                     let uiImageGrid = ViewControllerConstant.collectionView.arrayOfGridImages[count]
@@ -451,7 +447,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             toolbar.tintColor = UIColor.white
             toolbar.backgroundColor = UIColor.black
             // add the buttons on the toolbar
-            toolbar.items = [myUIBarButtonGreen, myUIBarButtonBlue, myUIBarButtonRed,myUIBarButtonArrow,myUIBarButtonA]
+            toolbar.items = [eraser,preview,myUIBarButtonArrow,myUIBarButtonA]
             self.view.addSubview(scroll)
             self.view.addSubview(toolbar)
             self.view.addSubview(addbutton)
@@ -464,9 +460,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             self.view.addSubview(secondScroll)
             secondScroll.translatesAutoresizingMaskIntoConstraints = false
             secondScroll.backgroundColor = UIColor.white
-            secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
+            secondScroll <- [Top().to(self.view, .centerY), Left(80), Right(), Height(60), Width(UIScreen.main.bounds.width)]
             self.view.addSubview(middlebutton)
-            middlebutton <- [Top().to(self.view, .centerY),Left(0), Height(60), Width(100)]
+            middlebutton <- [Top().to(self.view, .centerY),Left(0), Height(60), Width(80)]
             middlebutton.setImage(#imageLiteral(resourceName: "arrow-down"), for: .normal)
             middlebutton.addTarget(self, action: #selector(viewchange(sender:)), for: .touchUpInside)
             middlebutton.backgroundColor = UIColor.white
@@ -484,7 +480,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             currentView = ViewControllerConstant.maleView
             secondScroll.translatesAutoresizingMaskIntoConstraints = false
             secondScroll.backgroundColor = UIColor.white
-            secondScroll <- [Top().to(self.view, .centerY), Left(100), Right(), Height(60), Width(UIScreen.main.bounds.width)]
+            secondScroll <- [Top().to(self.view, .centerY), Left(80), Right(), Height(60), Width(UIScreen.main.bounds.width)]
             self.view.addSubview(middlebutton)
             changeSecondScrollButtons(tag: 6, index:1)
         case 2:
@@ -533,7 +529,6 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     func valuePassed(value: String, width: Double, height: Double) {
         addLayers(value: value, width: width, height: height)
     }
-    
     func addLayers(value: String, width: Double, height: Double ){
         textArray.append(value)
         self.tableView.dataSource = self
@@ -543,33 +538,25 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         scroll.frame = CGRect(x:0, y:105 , width: self.view.frame.width*3/4,height: self.view.frame.height*35/100)
         let uiView = UIView()
         uiView.frame = CGRect(x:0, y: 0, width: self.view.frame.width * 80/100 , height : self.view.frame.height * 2/5)
-        
-        
         scroll.contentSize = uiView.frame.size
-        scroll.contentSize = imageView.frame.size
         let index = textArray.count
         uiView.tag = index
         print("UIView tag is---",uiView.tag)
         scroll.addSubview(uiView)
         self.view.addSubview(scroll)
+        self.view.addSubview(middlebutton)
+        self.view.addSubview(secondScroll)
         currentView = scroll
-     
-        var x:Double = 0
-        var y:Double = 100
         for i in 0...rowForImage{
             for j in 0...columnForImage{
                 let imageView =  UIButton()
-                
                 imageView.addTarget(self, action: #selector(switchButtonImage(sender:)), for: .touchUpInside)
                 imageView.backgroundColor = .clear
-                imageView.frame = CGRect(x:width*Double(j), y: Double(i)*height, width: width , height : height)
-                imageView.tag = i + 10*j
+                imageView.frame = CGRect(x:width*Double(i), y: Double(j)*height, width: width , height : height)
+                imageView.tag = (i+1) + 10*(j+1)
                 imageView.setImage(#imageLiteral(resourceName: "square"), for: .normal)
                 uiView.addSubview(imageView)
-                //self.view.addSubview(uiView)
-                y += 10
             }
-            x += 10
         }
     }
 }
