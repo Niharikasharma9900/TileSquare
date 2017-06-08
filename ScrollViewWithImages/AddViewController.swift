@@ -51,6 +51,9 @@ class AddViewController: UIViewController {
         heighttextbox.layer.borderWidth = 1
         heighttextbox <- [Top(20).to(self.widthtextbox),Width(200),Height(30), CenterX(50)]
         heighttextbox.layer.cornerRadius = 5
+        self.layertextbox.text = "1"
+        self.widthtextbox.text = "40"
+        self.heighttextbox.text = "40"
     }
     
     override func didReceiveMemoryWarning() {
