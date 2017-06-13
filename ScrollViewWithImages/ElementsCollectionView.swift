@@ -25,10 +25,10 @@ class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UIColle
         self.backgroundColor = .white
        
         let flowLayout = UICollectionViewFlowLayout()
-        let width = (UIScreen.main.bounds.width - 20)/3
+        let width = (UIScreen.main.bounds.width)/3
         flowLayout.itemSize = CGSize(width:width,height:width - 50)
-        flowLayout.minimumInteritemSpacing = 5
-        flowLayout.minimumLineSpacing = 5
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = 0
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: interimSpacing, bottom: 0, right: interimSpacing)
         self.setCollectionViewLayout(flowLayout, animated: true)
         self.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "collectionCell")
@@ -54,7 +54,8 @@ class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UIColle
     {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath)
         cell.backgroundColor = .white
-        
+        cell.layer.borderWidth = 1.0
+     //   cell.layer.borderColor= UIColor.black as! CGColor
         if cell.backgroundView == nil{
             let imageView = UIImageView()
             imageView.image = images[indexPath.row]

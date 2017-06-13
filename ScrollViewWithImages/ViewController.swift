@@ -8,7 +8,7 @@ import Darwin
 struct ViewControllerConstant{
     static let collectionView = ElementsCollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     static let buttonImages = [[#imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "apple")],[#imageLiteral(resourceName: "face1"), #imageLiteral(resourceName: "hair1"), #imageLiteral(resourceName: "f3"), #imageLiteral(resourceName: "f4"), #imageLiteral(resourceName: "f5")], [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "twitter")], [#imageLiteral(resourceName: "red"), #imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower")]]
-  //  static let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
+    //  static let gridArray = [[#imageLiteral(resourceName: "tile1-1"),#imageLiteral(resourceName: "tile1-2"),#imageLiteral(resourceName: "tile1-3"),#imageLiteral(resourceName: "tile1-4")],[#imageLiteral(resourceName: "tile2-1"),#imageLiteral(resourceName: "tile2-2"),#imageLiteral(resourceName: "tile2-3"),#imageLiteral(resourceName: "tile2-4")],[#imageLiteral(resourceName: "tile3-1"),#imageLiteral(resourceName: "tile3-2"),#imageLiteral(resourceName: "tile3-3"),#imageLiteral(resourceName: "tile3-4")],[#imageLiteral(resourceName: "tile4-1"),#imageLiteral(resourceName: "tile4-2"),#imageLiteral(resourceName: "tile4-3"),#imageLiteral(resourceName: "tile4-4")]]
     static let maleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
     static let femaleView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
     static let petView = MaleView(frame: CGRect(x:0, y:0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2))
@@ -136,10 +136,22 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         toolbar.barStyle = .blackTranslucent
         toolbar.tintColor = UIColor.white
         toolbar.backgroundColor = UIColor.black
-        eraser = UIBarButtonItem(title: "Eraser",style: .plain,target: self, action: #selector(onClickBarButton))
-        eraser.tag = 3
-        preview = UIBarButtonItem(title:"Preview",style: .plain, target: self,action: #selector(onClickBarButton))
-        preview.tag = 4
+        let btn2 = UIButton(type: .custom)
+        btn2.setImage(UIImage(named: "im"), for: .normal)
+        btn2.frame = CGRect(x: 0, y:0, width: 20, height: 20)
+        btn2.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        eraser = UIBarButtonItem(customView: btn2)
+        btn2.tag = 3
+        let btn3 = UIButton(type: .custom)
+        btn3.setImage(UIImage(named: "preview"), for: .normal)
+    btn3.backgroundColor = UIColor.white
+        btn3.frame = CGRect(x: 0, y:0, width: 20, height: 20)
+        btn3.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        preview = UIBarButtonItem(customView: btn3)
+
+      //  preview = UIBarButtonItem(title:"Preview",style: .plain, target: self,action: #selector(onClickBarButton))
+     //   preview.tag = 4
+        btn3.tag = 4
         myUIBarButtonArrow = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: #selector(onClickBarButton))
         myUIBarButtonArrow.tag = 5
         myUIBarButtonA = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fastForward, target: self, action: #selector(onClickBarButton))
@@ -178,26 +190,22 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     
     //MARK: Custom Methods
     //MARK:
-    internal func onClickBarButton(sender: UIBarButtonItem) {
+    internal func onClickBarButton(sender: UIButton) {
+        //  let button = sender as? UIButton
         switch sender.tag {
-        case 1:
-            self.view.backgroundColor = UIColor.green
-        case 2:
-            self.view.backgroundColor = UIColor.blue
         case 3:
             if(!flag) {
-                
-                sender.tintColor = UIColor.cyan
+             sender.setImage(#imageLiteral(resourceName: "square"), for: .normal)
                 flag = true
             }
             else {
-                sender.tintColor = UIColor.white
+             sender.setImage(#imageLiteral(resourceName: "im"), for: .normal)
                 flag = false
             }
         case 4:
-           
+            
             let createTableView = Preview()
-         // createTableView.screenView = getSnapShot(view: currentView)!.copyView()
+            // createTableView.screenView = getSnapShot(view: currentView)!.copyView()
             savedimage1 = UIImage.imageWithView(view: getSnapShot(view: currentView)!)
             createTableView.savedimage = savedimage1
             self.navigationController?.pushViewController(createTableView, animated: true)
@@ -229,7 +237,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     
     func getSnapShot(view: UIView?) -> UIView? {
         let sampleView = view
-      //  sampleView?.frame = CGRect(x: 0, y: 200, width: 200 , height: 400)
+        //  sampleView?.frame = CGRect(x: 0, y: 200, width: 200 , height: 400)
         sampleView?.backgroundColor = UIColor.white
         
         for i in 0..<rowForImage {
@@ -329,7 +337,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         else {
             
             let uiView = self.scroll.viewWithTag(textArray.count)
-        
+            
             let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.collectionView.arrayOfGridImages.count)))
             var count = 0
             let tag = sender.tag
