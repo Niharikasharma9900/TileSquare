@@ -30,7 +30,11 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     var ourText = String()
     var textArray:[String] = [String]()
     var defaults = UserDefaults.standard
-    var eraser: UIBarButtonItem!
+    var eraser, brush: UIBarButtonItem!
+    
+    var eyedropper: UIBarButtonItem!
+    var floodfill: UIBarButtonItem!
+    var brushSize : UIBarButtonItem!
     var myUIBarButtonArrow: UIBarButtonItem!
     var myUIBarButtonA: UIBarButtonItem!
     var preview : UIBarButtonItem!
@@ -131,32 +135,64 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         mySegmentedControl.tintColor = UIColor.red
         mySegmentedControl.selectedSegmentIndex = 0
         mySegmentedControl.addTarget(self, action: #selector(segmentedControl(sender:)), for: .valueChanged)
-        toolbar = UIToolbar(frame: CGRect(x:0, y:70,width: self.view.bounds.size.width, height:50.0))
+        toolbar = UIToolbar(frame: CGRect(x:0, y:70,width: self.view.bounds.size.width, height:40.0))
         toolbar.layer.position = CGPoint(x: self.view.bounds.width/2, y: 80)
         toolbar.barStyle = .blackTranslucent
-        toolbar.tintColor = UIColor.white
-        toolbar.backgroundColor = UIColor.black
+        toolbar.tintColor = UIColor.black
+        toolbar.barTintColor = UIColor(red: 246/255, green: 246/255, blue: 246/255, alpha: 1.0)
+        
+        let btn = UIButton(type: .custom)
+        btn.setImage(UIImage(named: "edit"), for: .normal)
+        btn.frame = CGRect(x: 0, y:0, width: 30, height: 14)
+        btn.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        eyedropper = UIBarButtonItem(customView: btn)
+        btn.tag = 1
+        
+        let btn1 = UIButton(type: .custom)
+        btn1.setImage(UIImage(named: "brushie"), for: .normal)
+        btn1.frame = CGRect(x: 0, y:10, width: 25, height: 19)
+        btn1.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        brush = UIBarButtonItem(customView: btn1)
+        btn1.tag = 2
+        
+        
         let btn2 = UIButton(type: .custom)
-        btn2.setImage(UIImage(named: "im"), for: .normal)
+        btn2.setImage(UIImage(named: "Eraser"), for: .normal)
         btn2.frame = CGRect(x: 0, y:0, width: 20, height: 20)
         btn2.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         eraser = UIBarButtonItem(customView: btn2)
         btn2.tag = 3
+        
+        let btnfloodfill = UIButton(type: .custom)
+        btnfloodfill.setImage(UIImage(named: "fillcolor"), for: .normal)
+        btnfloodfill.frame = CGRect(x: 0, y:0, width: 20, height: 20)
+        btnfloodfill.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        floodfill = UIBarButtonItem(customView: btnfloodfill)
+        btnfloodfill.tag = 4
+        
+        let btnsize = UIButton(type: .custom)
+        btnsize.setImage(UIImage(named: "circle"), for: .normal)
+        btnsize.frame = CGRect(x: 0, y:0, width: 20, height: 20)
+        btnsize.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        brushSize = UIBarButtonItem(customView: btnsize)
+        btnfloodfill.tag = 5
+
+        
         let btn3 = UIButton(type: .custom)
         btn3.setImage(UIImage(named: "preview"), for: .normal)
-    btn3.backgroundColor = UIColor.white
+        btn3.backgroundColor = UIColor.white
         btn3.frame = CGRect(x: 0, y:0, width: 20, height: 20)
         btn3.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         preview = UIBarButtonItem(customView: btn3)
-
-      //  preview = UIBarButtonItem(title:"Preview",style: .plain, target: self,action: #selector(onClickBarButton))
-     //   preview.tag = 4
-        btn3.tag = 4
+        btn3.tag = 6
+        
         myUIBarButtonArrow = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonArrow.tag = 5
+        myUIBarButtonArrow.tag = 7
+        
         myUIBarButtonA = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fastForward, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonA.tag = 5
-        toolbar.items = [eraser,preview,myUIBarButtonArrow,myUIBarButtonA]
+        myUIBarButtonA.tag = 7
+        
+        toolbar.items = [eyedropper,brush,floodfill,eraser,brushSize,preview,myUIBarButtonArrow,myUIBarButtonA]
         
     }
     
@@ -191,26 +227,41 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     //MARK: Custom Methods
     //MARK:
     internal func onClickBarButton(sender: UIButton) {
-        //  let button = sender as? UIButton
         switch sender.tag {
-        case 3:
+        case 1:
             if(!flag) {
-             sender.setImage(#imageLiteral(resourceName: "square"), for: .normal)
+                sender.setImage(#imageLiteral(resourceName: "bluepencil"), for: .normal)
+               // sender.backgroundColor = UIColor.blue
                 flag = true
             }
             else {
-             sender.setImage(#imageLiteral(resourceName: "im"), for: .normal)
+                sender.setImage(#imageLiteral(resourceName: "edit"), for: .normal)
                 flag = false
             }
-        case 4:
-            
-            let createTableView = Preview()
-            // createTableView.screenView = getSnapShot(view: currentView)!.copyView()
-            savedimage1 = UIImage.imageWithView(view: getSnapShot(view: currentView)!)
-            createTableView.savedimage = savedimage1
-            self.navigationController?.pushViewController(createTableView, animated: true)
-            
-        case 5:
+        case 6:
+            if (currentView == nil){
+                let alertController = UIAlertController(title: "Hello Users", message: "Please add a layer by clicking on add button", preferredStyle: .alert)
+                let defaultAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+                
+                //now we are adding the default action to our alertcontroller
+                alertController.addAction(defaultAction)
+                
+                //and finally presenting our alert using this method
+                present(alertController, animated: true, completion: nil)
+                
+                let tmpButton = self.view.viewWithTag(1) as? UIButton
+                        tmpButton?.setImage(#imageLiteral(resourceName: "edit"), for: .normal);
+                
+               
+            } else {
+                
+                let createTableView = Preview()
+                // createTableView.screenView = getSnapShot(view: currentView)!.copyView()
+                savedimage1 = UIImage.imageWithView(view: getSnapShot(view: currentView)!)
+                createTableView.savedimage = savedimage1
+                self.navigationController?.pushViewController(createTableView, animated: true)
+            }
+        case 7:
             let back = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(onBackBarButton))
             toolbar.items = [eraser,preview,myUIBarButtonArrow,back]
             self.view.addSubview(toolbar)

@@ -55,7 +55,7 @@ class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UIColle
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath)
         cell.backgroundColor = .white
         cell.layer.borderWidth = 1.0
-     //   cell.layer.borderColor= UIColor.black as! CGColor
+   
         if cell.backgroundView == nil{
             let imageView = UIImageView()
             imageView.image = images[indexPath.row]
