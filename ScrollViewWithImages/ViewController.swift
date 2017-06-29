@@ -5,6 +5,10 @@ import UIKit
 import EasyPeasy
 import Darwin
 
+
+enum ToolBarButtons: Int {
+    case dropper = 1,brush,floodFill,eraser,circle,preview,arrow
+}
 struct ViewControllerConstant{
     static let collectionView = ElementsCollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewLayout())
     static let buttonImages = [[#imageLiteral(resourceName: "tile4"), #imageLiteral(resourceName: "house"), #imageLiteral(resourceName: "cake"), #imageLiteral(resourceName: "line"), #imageLiteral(resourceName: "apple")],[#imageLiteral(resourceName: "face1"), #imageLiteral(resourceName: "hair1"), #imageLiteral(resourceName: "f3"), #imageLiteral(resourceName: "f4"), #imageLiteral(resourceName: "f5")], [#imageLiteral(resourceName: "dog"), #imageLiteral(resourceName: "bird"), #imageLiteral(resourceName: "bug"), #imageLiteral(resourceName: "cat"), #imageLiteral(resourceName: "twitter")], [#imageLiteral(resourceName: "red"), #imageLiteral(resourceName: "green"), #imageLiteral(resourceName: "box"), #imageLiteral(resourceName: "bullet"), #imageLiteral(resourceName: "flower")]]
@@ -42,6 +46,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     var dictionaryOfImages = [UIImage:Array<CollectionViewImage>]()
     var flag = false
     var savedimage1 : UIImage!
+    var selectedToolBarButton: Int!
     
     override func viewDidLoad() {
         
@@ -146,14 +151,14 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         btn.frame = CGRect(x: 0, y:0, width: 30, height: 14)
         btn.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         eyedropper = UIBarButtonItem(customView: btn)
-        btn.tag = 1
+        btn.tag = ToolBarButtons.dropper.rawValue
         
         let btn1 = UIButton(type: .custom)
         btn1.setImage(UIImage(named: "brushie"), for: .normal)
         btn1.frame = CGRect(x: 0, y:10, width: 25, height: 19)
         btn1.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         brush = UIBarButtonItem(customView: btn1)
-        btn1.tag = 2
+        btn1.tag = ToolBarButtons.brush.rawValue
         
         
         let btn2 = UIButton(type: .custom)
@@ -161,36 +166,36 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         btn2.frame = CGRect(x: 0, y:0, width: 20, height: 20)
         btn2.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         eraser = UIBarButtonItem(customView: btn2)
-        btn2.tag = 3
+        btn2.tag = ToolBarButtons.eraser.rawValue
         
         let btnfloodfill = UIButton(type: .custom)
         btnfloodfill.setImage(UIImage(named: "fillcolor"), for: .normal)
         btnfloodfill.frame = CGRect(x: 0, y:0, width: 20, height: 20)
         btnfloodfill.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         floodfill = UIBarButtonItem(customView: btnfloodfill)
-        btnfloodfill.tag = 4
+        btnfloodfill.tag = ToolBarButtons.floodFill.rawValue
         
         let btnsize = UIButton(type: .custom)
         btnsize.setImage(UIImage(named: "circle"), for: .normal)
         btnsize.frame = CGRect(x: 0, y:0, width: 20, height: 20)
         btnsize.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
         brushSize = UIBarButtonItem(customView: btnsize)
-        btnfloodfill.tag = 5
-
+        btnsize.tag = ToolBarButtons.circle.rawValue
         
-        let btn3 = UIButton(type: .custom)
-        btn3.setImage(UIImage(named: "preview"), for: .normal)
-        btn3.backgroundColor = UIColor.white
-        btn3.frame = CGRect(x: 0, y:0, width: 20, height: 20)
-        btn3.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
-        preview = UIBarButtonItem(customView: btn3)
-        btn3.tag = 6
+        
+        let btnpreview = UIButton(type: .custom)
+        btnpreview.setImage(UIImage(named: "preview"), for: .normal)
+        btnpreview.backgroundColor = UIColor.white
+        btnpreview.frame = CGRect(x: 0, y:0, width: 20, height: 20)
+        btnpreview.addTarget(self, action: #selector(onClickBarButton), for: .touchUpInside)
+        preview = UIBarButtonItem(customView: btnpreview)
+        btnpreview.tag = ToolBarButtons.preview.rawValue
         
         myUIBarButtonArrow = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonArrow.tag = 7
+        myUIBarButtonArrow.tag = ToolBarButtons.arrow.rawValue
         
         myUIBarButtonA = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.fastForward, target: self, action: #selector(onClickBarButton))
-        myUIBarButtonA.tag = 7
+        myUIBarButtonA.tag = ToolBarButtons.arrow.rawValue
         
         toolbar.items = [eyedropper,brush,floodfill,eraser,brushSize,preview,myUIBarButtonArrow,myUIBarButtonA]
         
@@ -227,18 +232,62 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
     //MARK: Custom Methods
     //MARK:
     internal func onClickBarButton(sender: UIButton) {
+        selectedToolBarButton = sender.tag
         switch sender.tag {
-        case 1:
+        case ToolBarButtons.dropper.rawValue:
             if(!flag) {
                 sender.setImage(#imageLiteral(resourceName: "bluepencil"), for: .normal)
-               // sender.backgroundColor = UIColor.blue
+                // sender.backgroundColor = UIColor.blue
                 flag = true
             }
-            else {
+            else{
                 sender.setImage(#imageLiteral(resourceName: "edit"), for: .normal)
                 flag = false
             }
-        case 6:
+        case ToolBarButtons.brush.rawValue:
+            if(!flag) {
+                sender.setImage(#imageLiteral(resourceName: "bluebrush"), for: .normal)
+                // sender.backgroundColor = UIColor.blue
+                flag = true
+            }
+            else {
+                sender.setImage(#imageLiteral(resourceName: "brushie"), for: .normal)
+                flag = false
+            }
+        case ToolBarButtons.eraser.rawValue:
+            if(!flag) {
+                sender.setImage(#imageLiteral(resourceName: "blueeraser"), for: .normal)
+                // sender.backgroundColor = UIColor.blue
+                flag = true
+                let tmpButton = self.view.viewWithTag(1) as? UIButton
+                tmpButton?.setImage(#imageLiteral(resourceName: "edit"), for: .normal);
+
+            }
+            else {
+                sender.setImage(#imageLiteral(resourceName: "Eraser"), for: .normal)
+                flag = false
+            }
+        case ToolBarButtons.floodFill.rawValue:
+            if(!flag) {
+                sender.setImage(#imageLiteral(resourceName: "fillcolor"), for: .normal)
+                // sender.backgroundColor = UIColor.blue
+                flag = true
+            }
+            else {
+                sender.setImage(#imageLiteral(resourceName: "bluebucket"), for: .normal)
+                flag = false
+            }
+        case ToolBarButtons.circle.rawValue:
+            if(!flag) {
+                sender.setImage(#imageLiteral(resourceName: "circle"), for: .normal)
+                // sender.backgroundColor = UIColor.blue
+                flag = true
+            }
+            else {
+                sender.setImage(#imageLiteral(resourceName: "bluecircle"), for: .normal)
+                flag = false
+            }
+        case ToolBarButtons.preview.rawValue:
             if (currentView == nil){
                 let alertController = UIAlertController(title: "Hello Users", message: "Please add a layer by clicking on add button", preferredStyle: .alert)
                 let defaultAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -249,10 +298,8 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
                 //and finally presenting our alert using this method
                 present(alertController, animated: true, completion: nil)
                 
-                let tmpButton = self.view.viewWithTag(1) as? UIButton
-                        tmpButton?.setImage(#imageLiteral(resourceName: "edit"), for: .normal);
                 
-               
+                
             } else {
                 
                 let createTableView = Preview()
@@ -261,7 +308,9 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
                 createTableView.savedimage = savedimage1
                 self.navigationController?.pushViewController(createTableView, animated: true)
             }
-        case 7:
+            
+            
+        case ToolBarButtons.arrow.rawValue:
             let back = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(onBackBarButton))
             toolbar.items = [eraser,preview,myUIBarButtonArrow,back]
             self.view.addSubview(toolbar)
@@ -357,7 +406,7 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
         middlebutton.backgroundColor = UIColor.white
     }
     
-    func switchButtonImage(sender: UIButton){
+    func switchButtonImage(sender: UIButton) {
         if ViewControllerConstant.collectionView.selectedButton == nil{
             if sender.backgroundColor != .darkGray{
                 sender.backgroundColor = .darkGray
@@ -368,6 +417,12 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
                 highlightedButtons.remove(at: highlightedButtons.index(of: sender)!)
             }
         } else if flag {
+            switch selectedToolBarButton {
+            case ToolBarButtons.dropper.rawValue:
+                <#code#>
+            default:
+                <#code#>
+            }
             let uiView = self.scroll.viewWithTag(textArray.count)
             let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.collectionView.arrayOfGridImages.count)))
             let tag = sender.tag
