@@ -97,6 +97,7 @@ class ElementsCollectionView: UICollectionView, UICollectionViewDelegate,UIColle
                     guard let array = selectedImageArray else {
                         return
                     }
+                   
                     arrayOfGridImages = array
                 }
             }

@@ -418,28 +418,51 @@ class ViewController: UIViewController, UIToolbarDelegate,UITableViewDataSource,
             }
         } else if flag {
             switch selectedToolBarButton {
+                
             case ToolBarButtons.dropper.rawValue:
-                <#code#>
-            default:
-                <#code#>
-            }
-            let uiView = self.scroll.viewWithTag(textArray.count)
-            let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.collectionView.arrayOfGridImages.count)))
-            let tag = sender.tag
-            var startIndexI = tag/10
-            for _ in 0..<gridMatrixValue {
-                var startIndexJ = tag%10
+                print("Dropper")
+                
+            case ToolBarButtons.brush.rawValue:
+                sender.setImage(ViewControllerConstant.collectionView.selectedButton?.image, for: .normal)
+                
+           
+            case ToolBarButtons.eraser.rawValue:
+                let uiView = self.scroll.viewWithTag(textArray.count)
+                let gridMatrixValue = Int(sqrt(Double(ViewControllerConstant.collectionView.arrayOfGridImages.count)))
+                let tag = sender.tag
+                var startIndexI = tag/10
                 for _ in 0..<gridMatrixValue {
-                    
-                    let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
-                    startIndexJ += 1
-                    button?.setImage(#imageLiteral(resourceName: "square"), for: .normal)
-                    
+                    var startIndexJ = tag%10
+                    for _ in 0..<gridMatrixValue {
+                        
+                        let button = uiView?.viewWithTag(startIndexJ+(10*startIndexI)) as? UIButton
+                        startIndexJ += 1
+                        button?.setImage(#imageLiteral(resourceName: "square"), for: .normal)
+                        
+                    }
+                    startIndexI += 1
                 }
-                startIndexI += 1
+                
+            case ToolBarButtons.floodFill.rawValue:
+                let uiView = self.scroll.viewWithTag(textArray.count)
+            for i in 0..<rowForImage {
+                
+                    for j in 0..<columnForImage {
+                        
+                        let button = uiView?.viewWithTag(i + 10*j) as? UIButton
+                    
+                     button?.setImage(ViewControllerConstant.collectionView.selectedButton?.image, for: .normal)
+                        
+                    }
+                
+                }
+                
+
+            default:
+                print("Error")
             }
-            
         }
+        
         else {
             
             let uiView = self.scroll.viewWithTag(textArray.count)
